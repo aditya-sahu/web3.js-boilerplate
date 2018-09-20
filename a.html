@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+		<script src="https://www.lactame.com/lib/ml/3.2.0/ml.min.js"> </script>
+		<script src="./node_modules/web3/dist/web3.min.js"> </script>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"> </script>
+	</head>
+	<body>
+	<input id="uid" type="text" />
+	<select id="symp1">
+			<option value="1">Headache</option>
+			<option value="2">Eye pain</option>
+			<option value="3">Arm pain</option>
+	<select>
+	<select id="symp2">
+			<option  value="1">Headache</option>
+			<option value="2">Eye pain</option>
+			<option value="3">Arm pain</option>
+	</select>
+	<select id="symp3">
+			<option value="1">Headache</option>
+			<option value="2">Eye pain</option>
+			<option value="3">Arm pain</option>
+			
+	</select>
+	<button id="button">SUBMIT</button>
+	<button id="receipt">Book Appointment</button>
+		<script>
+			if (typeof web3 !== 'undefined') {
+             web3 = new Web3(web3.currentProvider);
+            } else {
+                // set the provider you want from Web3.providers
+                web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+                   }
+                  
+         web3.eth.defaultAccount = web3.eth.accounts[0];
+		 var Contract = web3.eth.contract(
+		 [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "symp",
+				"type": "bytes32[]"
+			},
+			{
+				"name": "id",
+				"type": "bytes32"
+			}
+		],
+		"name": "setSymptoms",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "bytes32"
+			}
+		],
+		"name": "getDisease",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "idtodisease",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "bytes32"
+			}
+		],
+		"name": "getSymptoms",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			},
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "idtosymp",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "bytes32"
+			}
+		],
+		"name": "getReceipt",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "disease",
+				"type": "bytes32[]"
+			},
+			{
+				"name": "id",
+				"type": "bytes32"
+			}
+		],
+		"name": "setDisease",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
+		 );
+		 var ContractInstance = Contract.at('0x7169c388f0c17a05c53beb91897294f8591d11d7');
+
+		$("#button").click(function() {
+			ContractInstance.setSymptoms([$('#symp1').val(),$('#symp2').val(),$('#symp3').val()],$('#uid').val(),function(res,err){
+			});
+		});
+		
+		$("#receipt").click(function() {
+		ContractInstance.getReceipt("#uidcheck",function(error, result){
+            console.log('Your txn receipt: '+result+'. Use it as reference in future.');
+			});
+		});
+		</script>
+		
+	</body>
+</html>
